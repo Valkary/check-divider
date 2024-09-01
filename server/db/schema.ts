@@ -9,14 +9,14 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-	id: serial('id').primaryKey(),
+	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	last_names: text('last_names').notNull(),
 });
 
 export const owners = pgTable('owners', {
-	id: serial('id').primaryKey(),
-	user_id: integer('user_id')
+	id: serial('id').primaryKey().unique(),
+	user_id: text('user_id')
 		.references(() => users.id)
 		.notNull(),
 	phone: varchar('phone', { length: 256 }).notNull(),
@@ -54,7 +54,7 @@ export const employee_roles = pgTable('employee_roles', {
 
 export const employees = pgTable('employees', {
 	id: serial('id').primaryKey(),
-	user_id: integer('user_id')
+	user_id: text('user_id')
 		.references(() => users.id)
 		.notNull(),
 	restaurant_id: integer('restaurant_id')
